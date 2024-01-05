@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,22 +18,25 @@ import org.springframework.web.bind.annotation.RestController;
 import com.institute.entity.Institute;
 import com.institute.service.InstituteService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/institute")
+@Validated
 public class InstituteController 
 {
 	@Autowired
 	private InstituteService instituteService;
 	
 	@PostMapping("/register")
-	public ResponseEntity<Institute> regsiterInstitute(@RequestBody Institute institute)
+	public ResponseEntity<Institute> regsiterInstitute(@Valid @RequestBody Institute institute)
 	{
 		Institute registeredInstitute = instituteService.registerInstitute(institute);
 		return new ResponseEntity<>(registeredInstitute,HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Institute> modifyInstitute(@PathVariable("id")Long id,@RequestBody Institute institute)
+	public ResponseEntity<Institute> modifyInstitute(@PathVariable("id")Long id,@Valid @RequestBody Institute institute)
 	{
 		Institute updatedInstitute = instituteService.modifyInstitute(id, institute);
 		return new ResponseEntity<>(updatedInstitute,HttpStatus.OK);
